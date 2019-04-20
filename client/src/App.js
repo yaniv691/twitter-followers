@@ -75,8 +75,11 @@ class App extends Component {
         <div className="followers-list">
           {this.state.followers.map(follower => <div key={follower.id} className="follower">
             <img src={follower.profile_image_url} alt={`${follower.name} Twitter Profile Avatar`} />
-            <a href={`https://twitter.com/${follower.screen_name}`} target="_blank" rel="noopener noreferrer">{follower.name}</a>
-            @{follower.screen_name}
+            <div className="follower__name">
+              <a href={`https://twitter.com/${follower.screen_name}`} target="_blank" rel="noopener noreferrer">{follower.name}</a>
+              <br />
+              @{follower.screen_name}
+            </div>
           </div>)}
         </div>
         {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
