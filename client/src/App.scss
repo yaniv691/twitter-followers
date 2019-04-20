@@ -1,0 +1,17 @@
+.followers-list {
+  .follower {
+    &:nth-child(odd) {
+      background-color: #f2f2f2
+    }
+
+    &:nth-child(even) {
+      background-color: #FFF;
+    }
+
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+    }
+  }
+}

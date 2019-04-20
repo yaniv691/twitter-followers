@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 
 class App extends Component {
   state = {
@@ -42,12 +41,13 @@ class App extends Component {
       <div className="App">
         <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
-        <ol>
-          {this.state.followers.map(follower => <li key={follower.id}>
+        <div className="followers-list">
+          {this.state.followers.map(follower => <div key={follower.id} className="follower">
             <img src={follower.profile_image_url} alt={`${follower.name} Twitter Profile Avatar`} />
-            Name: {follower.name} ||| Screen Name: {follower.screen_name}
-          </li>)}
-        </ol>
+            <a href={`https://twitter.com/${follower.screen_name}`} target="_blank" rel="noopener noreferrer">{follower.name}</a>
+            @{follower.screen_name}
+          </div>)}
+        </div>
       </div>
     );
   }
