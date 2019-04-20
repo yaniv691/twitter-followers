@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Follower from './components/Follower';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 class App extends Component {
   state = {
@@ -66,16 +71,32 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.screenNameInput} name="screen_name_input" onChange={this.handleScreenNameChange} />
-          <button>Submit</button>
-        </form>
+        <Form onSubmit={this.handleSubmit}>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              placeholder="Twitter username"
+              aria-label="Twitter username"
+              aria-describedby="basic-addon2"
+              value={this.state.screenNameInput}
+              name="screen_name_input"
+              onChange={this.handleScreenNameChange}
+            />
+            <InputGroup.Append>
+              <Button variant="primary" type="submit">Submit</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </Form>
+
         <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
         {this.state.isLoading && <div>Loading...</div>}
-        <div className="followers-list">
+        {!this.state.isLoading && <div className="followers-list">
           {this.state.followers.map(follower => <Follower key={follower.id} followerDetails={follower} />)}
-        </div>
+        </div>}
+
         {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
         {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
       </div>
