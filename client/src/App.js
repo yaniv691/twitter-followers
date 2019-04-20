@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
+import Follower from './components/Follower';
 
 class App extends Component {
   state = {
@@ -73,14 +74,7 @@ class App extends Component {
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
         {this.state.isLoading && <div>Loading...</div>}
         <div className="followers-list">
-          {this.state.followers.map(follower => <div key={follower.id} className="follower">
-            <img src={follower.profile_image_url} alt={`${follower.name} Twitter Profile Avatar`} />
-            <div className="follower__name">
-              <a href={`https://twitter.com/${follower.screen_name}`} target="_blank" rel="noopener noreferrer">{follower.name}</a>
-              <br />
-              @{follower.screen_name}
-            </div>
-          </div>)}
+          {this.state.followers.map(follower => <Follower key={follower.id} followerDetails={follower} />)}
         </div>
         {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
         {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
