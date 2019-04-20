@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Follower from './components/Follower';
+import Followers from './components/Followers';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -93,9 +93,7 @@ class App extends Component {
         <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
         {this.state.isLoading && <div>Loading...</div>}
-        {!this.state.isLoading && <div className="followers-list">
-          {this.state.followers.map(follower => <Follower key={follower.id} followerDetails={follower} />)}
-        </div>}
+        {!this.state.isLoading && <Followers followers={this.state.followers} />}
 
         {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
         {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
