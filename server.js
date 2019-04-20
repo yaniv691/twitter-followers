@@ -12,7 +12,7 @@ const client = new Twitter({
 
 
 app.get('/api/followers', function (req, res) {
-  var params = { screen_name: 'stephenperkins', count: 30, cursor: 1630624962571826400 };
+  var params = { screen_name: 'stephenperkins', count: 30 };
   client.get('followers/list', params, function (error, followers, response) {
     if (!error) {
       console.log(followers);
