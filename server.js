@@ -24,6 +24,4 @@ app.get('/api/followers', function (req, res) {
   });
 })
 
-app.get('/', (req, res) => res.send('Twiiiiiiiiter!'));
-
-app.listen(port, () => console.log(`Twitter app listing on port ${port}`));
+app.listen(port, () => console.log(`Listing on port ${port}`));
