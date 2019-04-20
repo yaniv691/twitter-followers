@@ -4,17 +4,31 @@ import './App.css';
 
 class App extends Component {
   state = {
-    followers: '',
+    followers: [],
     post: '',
     responseToPost: '',
   };
   componentDidMount() {
-    this.callApi()
-      .then(res => {
-        console.log(res);
-        this.setState({ followers: res.users })
-      })
-      .catch(err => console.log(err));
+    const followers = JSON.parse(localStorage.getItem('followers'));
+    if (!followers) {
+      this.callApi()
+        .then(res => {
+          localStorage.setItem('followers', JSON.stringify(res.users));
+          this.setState({ followers: res.users })
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.setState({ followers: followers })
+    }
+  }
+  sortFollowersList = (key) => {
+    const followers = this.state.followers;
+    followers.sort((a, b) => {
+      const lowerCaseA = a[key].toLowerCase();
+      const lowerCaseB = b[key].toLowerCase();
+      return lowerCaseA === lowerCaseB ? 0 : lowerCaseA < lowerCaseB ? -1 : 1;
+    });
+    this.setState({ followers: followers });
   }
   callApi = async () => {
     const response = await fetch('/api/followers');
@@ -23,23 +37,17 @@ class App extends Component {
     return body;
   };
   render() {
-
+    console.log(this.state.followers);
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
+        <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
+        <ol>
+          {this.state.followers.map(follower => <li key={follower.id}>
+            <img src={follower.profile_image_url} alt={`${follower.name} Twitter Profile Avatar`} />
+            Name: {follower.name} ||| Screen Name: {follower.screen_name}
+          </li>)}
+        </ol>
       </div>
     );
   }
