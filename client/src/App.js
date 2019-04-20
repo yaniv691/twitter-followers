@@ -4,22 +4,8 @@ import './App.scss';
 class App extends Component {
   state = {
     followers: [],
-    post: '',
-    responseToPost: '',
+    screenNameInput: ''
   };
-  componentDidMount() {
-    const followers = JSON.parse(localStorage.getItem('followers'));
-    if (!followers) {
-      this.callApi()
-        .then(res => {
-          localStorage.setItem('followers', JSON.stringify(res.users));
-          this.setState({ followers: res.users })
-        })
-        .catch(err => console.log(err));
-    } else {
-      this.setState({ followers: followers })
-    }
-  }
   sortFollowersList = (key) => {
     const followers = this.state.followers;
     followers.sort((a, b) => {
@@ -29,16 +15,37 @@ class App extends Component {
     });
     this.setState({ followers: followers });
   }
-  callApi = async () => {
-    const response = await fetch('/api/followers');
+  callApi = async (screenName) => {
+    const response = await fetch(`/api/followers?screenName=${screenName}`);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Screen name submitted is:', this.state.screenNameInput);
+    this.callApi(this.state.screenNameInput)
+      .then(res => {
+        this.setState({ followers: res.users })
+      })
+      .catch(err => console.log(err));
+  }
+
+  handleScreenNameChange = (event) => {
+    this.setState({
+      screenNameInput: event.target.value
+    });
+  }
+
+
   render() {
-    console.log(this.state.followers);
     return (
       <div className="App">
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" value={this.state.screenNameInput} name="screen_name_input" onChange={this.handleScreenNameChange} />
+          <button>Submit</button>
+        </form>
         <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
         <div className="followers-list">
