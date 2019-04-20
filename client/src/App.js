@@ -3,6 +3,8 @@ import './App.scss';
 import Followers from './components/Followers';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -70,34 +72,38 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Form onSubmit={this.handleSubmit}>
-          <InputGroup className="mb-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              placeholder="Twitter username"
-              aria-label="Twitter username"
-              aria-describedby="basic-addon2"
-              value={this.state.screenNameInput}
-              name="screen_name_input"
-              onChange={this.handleScreenNameChange}
-            />
-            <InputGroup.Append>
-              <Button variant="primary" type="submit">Submit</Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Form>
+      <Container>
 
-        <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
-        <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
-        {this.state.isLoading && <div>Loading...</div>}
-        {!this.state.isLoading && <Followers followers={this.state.followers} />}
+        <div className="App">
+          <Form onSubmit={this.handleSubmit}>
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                placeholder="Twitter username"
+                aria-label="Twitter username"
+                aria-describedby="basic-addon2"
+                value={this.state.screenNameInput}
+                name="screen_name_input"
+                onChange={this.handleScreenNameChange}
+              />
+              <InputGroup.Append>
+                <Button variant="primary" type="submit">Submit</Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Form>
 
-        {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
-        {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
-      </div>
+
+          {this.state.isLoading && <Spinner variant="primary" animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>}
+          {!this.state.isLoading && <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />}
+
+          {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
+          {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
+        </div>
+      </Container>
     );
   }
 }
