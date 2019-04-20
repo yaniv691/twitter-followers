@@ -5,7 +5,9 @@ class App extends Component {
   state = {
     followers: [],
     screenNameInput: '',
-    isLoading: false
+    isLoading: false,
+    nextCursor: '',
+    prevCursor: '',
   };
   sortFollowersList = (key) => {
     const followers = this.state.followers;
@@ -16,11 +18,15 @@ class App extends Component {
     });
     this.setState({ followers: followers });
   }
-  callApi = async (screenName) => {
+  callApi = async (screenName, cursor) => {
     this.setState({
       isLoading: true
     });
-    const response = await fetch(`/api/followers?screenName=${screenName}`);
+    let params = `screenName=${screenName}`;
+    if (cursor) {
+      params += `&cursor=${cursor}`;
+    }
+    const response = await fetch(`/api/followers?${params}`);
     const body = await response.json();
     this.setState({
       isLoading: false
@@ -29,14 +35,25 @@ class App extends Component {
     return body;
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Screen name submitted is:', this.state.screenNameInput);
-    this.callApi(this.state.screenNameInput)
-      .then(res => {
-        this.setState({ followers: res.users })
+  getFollowers = (cursorKey = -1) => {
+    this.callApi(this.state.screenNameInput, this.state[cursorKey])
+      .then(response => {
+        this.setState({
+          followers: response.users,
+          nextCursor: response.next_cursor,
+          prevCursor: response.previous_cursor
+        })
       })
       .catch(err => console.log(err));
+  }
+
+  navigateFollowers = (cursorKey) => {
+    this.getFollowers(cursorKey);
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.getFollowers();
   }
 
   handleScreenNameChange = (event) => {
@@ -44,7 +61,6 @@ class App extends Component {
       screenNameInput: event.target.value
     });
   }
-
 
   render() {
     return (
@@ -63,6 +79,8 @@ class App extends Component {
             @{follower.screen_name}
           </div>)}
         </div>
+        {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
+        {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
       </div>
     );
   }
