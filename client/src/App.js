@@ -4,7 +4,8 @@ import './App.scss';
 class App extends Component {
   state = {
     followers: [],
-    screenNameInput: ''
+    screenNameInput: '',
+    isLoading: false
   };
   sortFollowersList = (key) => {
     const followers = this.state.followers;
@@ -16,8 +17,14 @@ class App extends Component {
     this.setState({ followers: followers });
   }
   callApi = async (screenName) => {
+    this.setState({
+      isLoading: true
+    });
     const response = await fetch(`/api/followers?screenName=${screenName}`);
     const body = await response.json();
+    this.setState({
+      isLoading: false
+    });
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
@@ -48,6 +55,7 @@ class App extends Component {
         </form>
         <button onClick={() => this.sortFollowersList('screen_name')}>Sort by Screen Name</button>
         <button onClick={() => this.sortFollowersList('name')}>Sort by Account Name</button>
+        {this.state.isLoading && <div>Loading...</div>}
         <div className="followers-list">
           {this.state.followers.map(follower => <div key={follower.id} className="follower">
             <img src={follower.profile_image_url} alt={`${follower.name} Twitter Profile Avatar`} />
