@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Followers from './components/Followers';
+import Navigation from './components/Navigation';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
@@ -14,8 +15,8 @@ class App extends Component {
     followers: [],
     screenNameInput: '',
     isLoading: false,
-    nextCursor: '',
-    prevCursor: '',
+    nextCursor: '0',
+    prevCursor: '0',
   };
   sortFollowersList = (key) => {
     const followers = this.state.followers;
@@ -48,8 +49,8 @@ class App extends Component {
       .then(response => {
         this.setState({
           followers: response.users,
-          nextCursor: response.next_cursor,
-          prevCursor: response.previous_cursor
+          nextCursor: response.next_cursor_str,
+          prevCursor: response.previous_cursor_str
         })
       })
       .catch(err => console.log(err));
@@ -99,9 +100,7 @@ class App extends Component {
             <span className="sr-only">Loading...</span>
           </Spinner>}
           {!this.state.isLoading && <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />}
-
-          {Number(this.state.prevCursor) !== 0 && <button onClick={() => this.navigateFollowers('prevCursor')}>Previous</button>}
-          {Number(this.state.nextCursor) !== 0 && <button onClick={() => this.navigateFollowers('nextCursor')}>Next</button>}
+          <Navigation prevCursor={this.state.prevCursor} nextCursor={this.state.nextCursor} navigateFollowers={this.navigateFollowers} />
         </div>
       </Container>
     );
