@@ -15,6 +15,7 @@ class App extends Component {
     followers: [],
     screenNameInput: '',
     isLoading: false,
+    firstQuerySent: false,
     nextCursor: '0',
     prevCursor: '0',
   };
@@ -29,10 +30,9 @@ class App extends Component {
   }
   callApi = async (screenName, cursor) => {
     this.setState({
-      isLoading: true
+      isLoading: true,
+      firstQuerySent: true,
     });
-
-
 
     let params = `screenName=${screenName}`;
     if (cursor) {
@@ -40,19 +40,12 @@ class App extends Component {
     }
     const response = await fetch(`/api/followers?${params}`);
     const body = await response.json();
-    setTimeout(() => {
-      this.setState({
-        isLoading: false
-      });
-
-    }, 100000000);
+    this.setState({
+      isLoading: false
+    });
     if (response.status !== 200) throw Error(body.message);
+    console.log(body);
     return body;
-
-
-
-
-
   };
 
   getFollowers = (cursorKey = -1) => {
@@ -92,8 +85,8 @@ class App extends Component {
                 <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
-                placeholder="Twitter username"
-                aria-label="Twitter username"
+                placeholder="Enter a Twitter username"
+                aria-label="Enter a Twitter username"
                 aria-describedby="basic-addon2"
                 value={this.state.screenNameInput}
                 name="screen_name_input"
@@ -105,14 +98,20 @@ class App extends Component {
             </InputGroup>
           </Form>
           <div className="main">
-            {this.state.isLoading && <Spinner variant="primary" animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>}
-            {!this.state.isLoading && <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />}
+            {(this.state.firstQuerySent && this.state.isLoading) &&
+              <Spinner variant="primary" animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            }
+            {(this.state.firstQuerySent && !this.state.isLoading) &&
+              <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />
+            }
           </div>
 
 
-          <Navigation prevCursor={this.state.prevCursor} nextCursor={this.state.nextCursor} navigateFollowers={this.navigateFollowers} />
+          {this.state.firstQuerySent &&
+            <Navigation prevCursor={this.state.prevCursor} nextCursor={this.state.nextCursor} navigateFollowers={this.navigateFollowers} />
+          }
         </div>
       </Container>
     );
