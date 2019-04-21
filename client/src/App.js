@@ -31,17 +31,28 @@ class App extends Component {
     this.setState({
       isLoading: true
     });
+
+
+
     let params = `screenName=${screenName}`;
     if (cursor) {
       params += `&cursor=${cursor}`;
     }
     const response = await fetch(`/api/followers?${params}`);
     const body = await response.json();
-    this.setState({
-      isLoading: false
-    });
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      });
+
+    }, 100000000);
     if (response.status !== 200) throw Error(body.message);
     return body;
+
+
+
+
+
   };
 
   getFollowers = (cursorKey = -1) => {
@@ -74,10 +85,9 @@ class App extends Component {
   render() {
     return (
       <Container>
-
         <div className="App">
           <Form onSubmit={this.handleSubmit}>
-            <InputGroup className="mb-3">
+            <InputGroup>
               <InputGroup.Prepend>
                 <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
               </InputGroup.Prepend>
@@ -94,12 +104,14 @@ class App extends Component {
               </InputGroup.Append>
             </InputGroup>
           </Form>
+          <div className="main">
+            {this.state.isLoading && <Spinner variant="primary" animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>}
+            {!this.state.isLoading && <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />}
+          </div>
 
 
-          {this.state.isLoading && <Spinner variant="primary" animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>}
-          {!this.state.isLoading && <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />}
           <Navigation prevCursor={this.state.prevCursor} nextCursor={this.state.nextCursor} navigateFollowers={this.navigateFollowers} />
         </div>
       </Container>

@@ -1,11 +1,34 @@
 .App {
-  height: 100vh;
+  height: 92vh;
   display: flex;
   flex-direction: column;
+  margin: 4vh 0;
 }
 
 th {
   position: sticky;
   top: 0;
   background: #FFF;
+}
+
+.spinner-border.text-primary {
+  width: 4rem;
+  height: 4rem;
+  border: .4em solid #1DA1F2;
+  border-right-color: transparent;
+}
+
+.main {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.btn-primary {
+  color: #fff;
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
 }
