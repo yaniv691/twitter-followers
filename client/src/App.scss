@@ -1,5 +1,5 @@
 .App {
-  height: 92vh;
+
   display: flex;
   flex-direction: column;
   margin: 4vh 0;
@@ -12,8 +12,8 @@ th {
 }
 
 .spinner-border.text-primary {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   border: .4em solid #1DA1F2;
   border-right-color: transparent;
 }
@@ -21,18 +21,18 @@ th {
 .emoji {
   font-size: 1.7em;
   margin: 0 0 .2rem;
+  display: block;
 }
 
 .main {
-  flex-grow: 1;
-  overflow-y: auto;
-  margin: 1rem 0;
+
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.btn.btn-primary {
+.btn-primary {
   color: #fff;
   background-color: #1DA1F2;
   border-color: #1DA1F2;

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import 'bootstrap-css-only/css/bootstrap.min.css';
 import './App.scss';
 import Followers from './components/Followers';
 import Navigation from './components/Navigation';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+import UserForm from './components/UserForm';
+
+
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
+
 
 class App extends Component {
   state = {
@@ -79,24 +79,11 @@ class App extends Component {
     return (
       <Container>
         <div className="App">
-          <Form onSubmit={this.handleSubmit}>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                placeholder="Enter a Twitter username"
-                aria-label="Enter a Twitter username"
-                aria-describedby="basic-addon2"
-                value={this.state.screenNameInput}
-                name="screen_name_input"
-                onChange={this.handleScreenNameChange}
-              />
-              <InputGroup.Append>
-                <Button variant="primary" type="submit">Submit</Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
+          <UserForm 
+          submitHandler={this.handleSubmit} 
+          changeHandler={this.handleScreenNameChange} 
+          screenNameInput={this.state.screenNameInput} 
+          />
           <div className="main">
             {(this.state.firstQuerySent && this.state.isLoading) &&
               <Spinner variant="primary" animation="border" role="status">
@@ -107,9 +94,7 @@ class App extends Component {
               <Followers followers={this.state.followers} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />
             }
           </div>
-
-
-          {this.state.firstQuerySent &&
+          {(this.state.firstQuerySent && this.state.followers && this.state.followers.length >0) &&
             <Navigation prevCursor={this.state.prevCursor} nextCursor={this.state.nextCursor} navigateFollowers={this.navigateFollowers} />
           }
         </div>

@@ -3,10 +3,10 @@ import Follower from './Follower';
 import Table from 'react-bootstrap/Table';
 function Followers(props) {
   if (!props.followers) {
-    return (<div className="text-center"><div className="emoji" role="img" aria-label="facepalm">🤷🏻‍♂️</div>Oops, no such user.</div>);
+    return (<div className="text-center"><span className="emoji" role="img" aria-label="facepalm">🤷🏻‍♂️</span>Oops, no such user.</div>);
   }
   if (props.followers.length === 0) {
-    return (<div className="text-center"><div className="emoji" role="img" aria-label="disappointed">😞</div>{props.screenNameInput} doesn't have any followers yet.</div>);
+    return (<div className="text-center"><span className="emoji" role="img" aria-label="disappointed">😞</span>{props.screenNameInput} doesn't have any followers yet.</div>);
   }
   return (
     <Table striped bordered hover responsive>
