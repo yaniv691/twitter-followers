@@ -2,10 +2,10 @@ import React from 'react';
 import Follower from './Follower';
 import Table from 'react-bootstrap/Table';
 function Followers(props) {
-  if (!props.followers) {
+  if (!props.users) {
     return (<div className="text-center"><span className="emoji" role="img" aria-label="facepalm">🤷🏻‍♂️</span>Oops, no such user.</div>);
   }
-  if (props.followers.length === 0) {
+  if (props.users.length === 0) {
     return (<div className="text-center"><span className="emoji" role="img" aria-label="disappointed">😞</span>{props.screenNameInput} doesn't have any followers yet.</div>);
   }
   return (
@@ -18,7 +18,7 @@ function Followers(props) {
         </tr>
       </thead>
       <tbody>
-        {props.followers.map(follower => <Follower key={follower.id} followerDetails={follower} />)}
+        {props.users.map(user => <Follower key={user.id} followerDetails={user} />)}
       </tbody>
     </Table>
   );

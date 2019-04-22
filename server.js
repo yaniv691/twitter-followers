@@ -12,7 +12,7 @@ const client = new Twitter({
 
 
 app.get('/api/followers', function (req, res) {
-  const params = { screen_name: req.query.screenName, count: 30 };
+  const params = { screen_name: req.query.screenName, count: 3 };
   if (req.query.cursor) {
     params.cursor = req.query.cursor;
   }
