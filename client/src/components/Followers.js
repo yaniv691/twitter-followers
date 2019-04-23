@@ -33,7 +33,7 @@ class Followers extends React.Component {
     }
 
     return (
-      <div class="followers-list-container">
+      <div className="followers-list-container">
         <small>Sort by:</small>
         <ButtonGroup size="sm" >
           <Button variant="link" onClick={this.sortByName}>Account Name</Button>
