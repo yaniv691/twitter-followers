@@ -4,10 +4,10 @@ const app = express();
 const port = 5000;
 
 const client = new Twitter({
-  consumer_key: 'URkiDH9wltyCdxUgRVMbw5ztK',
-  consumer_secret: 'fnsfVoSI5RM25Lm6V2C6SHNUXe3WK95TOiivLOidKvijInrkMU',
-  access_token_key: '953647069289418752-fpZDbO7W5xTOTiS8gF6OdI0yRN00XOO',
-  access_token_secret: 'A2phYmS2wF1xTWQ81Ayh7lasGcyBsFuKEuf71aX8PdVNg'
+  consumer_key: '', // Consumer API key goes here
+  consumer_secret: '', // Consumer API secret key goes here
+  access_token_key: '', // Access token goes here
+  access_token_secret: '' // Access token secret goes here
 });
 
 
