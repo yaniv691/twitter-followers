@@ -38,11 +38,12 @@ class App extends React.Component {
   fetchFollowers = (screenName, cursor = -1) => {
     store.dispatch({
       type: ACTIONS.REQUEST_FOLLOWERS,
-      screenName: this.state.screenNameInput,
+      screenName: screenName,
       isFetching: true,
-      apiCounter: this.props.apiCounter + 1,
+      apiCounter: this.props.apiCounter + 1
     });
-    let params = `screenName=${screenName}`;
+    const count = 5;
+    let params = `screenName=${screenName}&count=${count}`;
     if (cursor) {
       params += `&cursor=${cursor}`;
     }
@@ -58,7 +59,7 @@ class App extends React.Component {
   }
 
   navigateFollowers = (cursorKey) => {
-    this.fetchFollowers(this.props.screenNameInput, this.props[cursorKey]);
+    this.fetchFollowers(this.props.screenName, this.props[cursorKey]);
   }
 
   handleSubmit = (event) => {
@@ -81,16 +82,16 @@ class App extends React.Component {
           screenNameInput={this.state.screenNameInput}
         />
         <div className="main">
-          {(this.props.apiCounter && this.props.isFetching) &&
+          {(this.props.apiCounter > 0 && this.props.isFetching) &&
             <Spinner variant="primary" animation="border" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
           }
-          {(this.props.apiCounter && !this.props.isFetching) &&
+          {(this.props.apiCounter > 0 && !this.props.isFetching) &&
             <Followers users={this.props.users} sortFunction={this.sortFollowersList} screenNameInput={this.props.screenName} />
           }
         </div>
-        {(this.props.users && this.props.users.length) &&
+        {(this.props.users && this.props.users.length > 0) &&
           <Navigation prevCursor={this.props.prevCursor} nextCursor={this.props.nextCursor} navigateFollowers={this.navigateFollowers} />
         }
       </Container>
