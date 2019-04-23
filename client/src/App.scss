@@ -1,3 +1,5 @@
+$twitter-blue: #1DA1F2;
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -8,12 +10,16 @@ th {
   position: sticky;
   top: 0;
   background: #FFF;
+
+  &.sortable {
+    cursor: pointer;
+  }
 }
 
 .spinner-border.text-primary {
   width: 3rem;
   height: 3rem;
-  border: .4em solid #1DA1F2;
+  border: .4em solid $twitter-blue;
   border-right-color: transparent;
 }
 
@@ -33,6 +39,6 @@ th {
 
 .btn-primary {
   color: #fff;
-  background-color: #1DA1F2;
-  border-color: #1DA1F2;
+  background-color: $twitter-blue;
+  border-color: $twitter-blue;
 }
