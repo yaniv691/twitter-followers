@@ -13,8 +13,10 @@ function Followers(props) {
       <thead>
         <tr>
           <th></th>
-          <th onClick={() => props.sortFunction('name')}>Account Name</th>
-          <th onClick={() => props.sortFunction('screen_name')}>Screen Name</th>
+          <th onClick={() => props.sortFunction('name')} className="sortable">Account Name</th>
+          <th onClick={() => props.sortFunction('screen_name')} className="sortable">Screen Name</th>
+          <th>Following</th>
+          <th>Followers</th>
         </tr>
       </thead>
       <tbody>
