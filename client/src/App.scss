@@ -6,15 +6,43 @@ $twitter-blue: #1DA1F2;
   margin: 4vh auto;
 }
 
-th {
-  position: sticky;
-  top: 0;
-  background: #FFF;
+.followers-list-container {
+  width: 100%;
+}
 
-  &.sortable {
-    cursor: pointer;
+.followers-list {
+  margin-top: .5rem;
+
+  .profile-image {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    background: #FFF;
+
+    &.sortable {
+      cursor: pointer;
+    }
+  }
+
+  td {
+    vertical-align: middle;
+    padding: .5em;
+  }
+
+  &.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba($twitter-blue, .05)
+  }
+
+  &.table-hover tbody tr:hover {
+    background-color: rgba($twitter-blue, .2)
   }
 }
+
 
 .spinner-border.text-primary {
   width: 3rem;
@@ -30,15 +58,19 @@ th {
 }
 
 .main {
-
   margin: 2rem 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
   color: #fff;
   background-color: $twitter-blue;
   border-color: $twitter-blue;
+}
+
+.btn-link,
+a {
+  color: $twitter-blue;
 }
