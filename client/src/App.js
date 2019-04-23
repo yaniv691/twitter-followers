@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import './App.scss';
 
+import { ACTIONS } from './constants';
 import Followers from './components/Followers';
 import Navigation from './components/Navigation';
 import UserForm from './components/UserForm';
@@ -17,9 +18,7 @@ import store from "./store";
 
 class App extends React.Component {
   state = {
-    screenNameInput: '',
-    isLoading: false,
-    firstQuerySent: false,
+    screenNameInput: ''
   };
 
   sortFollowersList = (key) => {
@@ -30,29 +29,36 @@ class App extends React.Component {
       return lowerCaseA === lowerCaseB ? 0 : lowerCaseA < lowerCaseB ? -1 : 1;
     });
     store.dispatch({
-      type: 'SORT_FOLLOWERS',
+      type: ACTIONS.SORT_FOLLOWERS,
       sortBy: key,
       users
     })
   }
 
   fetchFollowers = (screenName, cursor = -1) => {
+    store.dispatch({
+      type: ACTIONS.REQUEST_FOLLOWERS,
+      screenName: this.state.screenNameInput,
+      isFetching: true,
+      apiCounter: this.props.apiCounter + 1,
+    });
     let params = `screenName=${screenName}`;
     if (cursor) {
       params += `&cursor=${cursor}`;
     }
     axios.get(`/api/followers?${params}`).then(response => {
       store.dispatch({
-        type: 'FOLLOWERS_RECEIVED',
+        type: ACTIONS.FOLLOWERS_RECEIVED,
         users: response.data.users,
         prevCursor: response.data.previous_cursor_str,
-        nextCursor: response.data.next_cursor_str
+        nextCursor: response.data.next_cursor_str,
+        isFetching: false
       });
     })
   }
 
   navigateFollowers = (cursorKey) => {
-    this.fetchFollowers(this.state.screenNameInput, this.props[cursorKey]);
+    this.fetchFollowers(this.props.screenNameInput, this.props[cursorKey]);
   }
 
   handleSubmit = (event) => {
@@ -75,30 +81,32 @@ class App extends React.Component {
           screenNameInput={this.state.screenNameInput}
         />
         <div className="main">
-          {(this.state.firstQuerySent && this.state.isLoading) &&
+          {(this.props.apiCounter && this.props.isFetching) &&
             <Spinner variant="primary" animation="border" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
           }
-          {/* {(this.state.firstQuerySent && !this.state.isLoading) && */}
-          <Followers users={this.props.users} sortFunction={this.sortFollowersList} screenNameInput={this.state.screenNameInput} />
-          {/* } */}
+          {(this.props.apiCounter && !this.props.isFetching) &&
+            <Followers users={this.props.users} sortFunction={this.sortFollowersList} screenNameInput={this.props.screenName} />
+          }
         </div>
-        {/* {(this.state.firstQuerySent && this.props.followers && this.props.followers.length > 0) && */}
-        <Navigation prevCursor={this.props.prevCursor} nextCursor={this.props.nextCursor} navigateFollowers={this.navigateFollowers} />
-        {/* } */}
+        {(this.props.users && this.props.users.length) &&
+          <Navigation prevCursor={this.props.prevCursor} nextCursor={this.props.nextCursor} navigateFollowers={this.navigateFollowers} />
+        }
       </Container>
     );
   }
 }
 
 const mapStateToProps = function (store) {
-  console.log(store);
   return {
     users: store.followersState.users,
     prevCursor: store.followersState.prevCursor,
     nextCursor: store.followersState.nextCursor,
-    sortBy: store.followersState.sortBy
+    sortBy: store.followersState.sortBy,
+    apiCounter: store.followersState.apiCounter,
+    isFetching: store.followersState.isFetching,
+    screenName: store.followersState.screenName
   };
 }
 
