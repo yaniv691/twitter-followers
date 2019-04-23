@@ -6,6 +6,20 @@ $twitter-blue: #1DA1F2;
   margin: 4vh auto;
 }
 
+.app-header {
+  margin-bottom: .5em;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .logo {
+    width: 60px;
+    vertical-align: middle;
+    margin-right: .3em;
+  }
+}
+
 .followers-list-container {
   width: 100%;
 }

@@ -5,6 +5,7 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import './App.scss';
 
 import { ACTIONS } from './constants';
+import Header from './components/Header';
 import Followers from './components/Followers';
 import Navigation from './components/Navigation';
 import UserForm from './components/UserForm';
@@ -76,6 +77,7 @@ class App extends React.Component {
   render() {
     return (
       <Container className="app-container">
+        <Header />
         <UserForm
           submitHandler={this.handleSubmit}
           changeHandler={this.handleScreenNameChange}
