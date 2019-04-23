@@ -1,6 +1,6 @@
 # Twitter Followers
 
-Simple application that shows a list of followers for a requested Twitter user
+Simple application that shows a list of followers for a requested Twitter user.
 
 ## Getting Started
 
@@ -43,7 +43,7 @@ Start the local backend server.
 node server.js
 ```
 #### Frontend
-Inside the project's directory, change into the client directory, install dependencies and 
+Inside the project's directory, change into the client directory and install dependencies. 
 
 ```
 cd client
