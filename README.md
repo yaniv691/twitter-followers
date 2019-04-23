@@ -18,7 +18,7 @@ To get your development environment up and running, start by cloning the repo lo
 ```
 git clone https://github.com/yaniv691/twitter-followers.git
 ```
-
+#### Backend
 Change into the project's directory and install the backend server's dependencies.
 
 ```
@@ -42,7 +42,7 @@ Start the local backend server.
 ```
 node server.js
 ```
-
+#### Frontend
 Inside the project's directory, change into the client directory, install dependencies and 
 
 ```
