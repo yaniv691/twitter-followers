@@ -42,7 +42,7 @@ class App extends React.Component {
       isFetching: true,
       apiCounter: this.props.apiCounter + 1
     });
-    const count = 5;
+    const count = 30;
     let params = `screenName=${screenName}&count=${count}`;
     if (cursor) {
       params += `&cursor=${cursor}`;
