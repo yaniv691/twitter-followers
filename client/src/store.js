@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const followersReducer = function (state = {}, action) {
   switch (action.type) {
@@ -16,7 +17,6 @@ const reducers = combineReducers({
 });
 
 
-const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = createStore(reducers, composeWithDevTools());
 
 export default store;
